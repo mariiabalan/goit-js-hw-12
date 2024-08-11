@@ -21,6 +21,7 @@ async function handleSubmitBtn(event) {
     event.preventDefault();
     clearImages();
     loader.classList.remove('hidden');
+    loadMoreBtn.classList.add('hidden');
 
     currentQuery = input.value.trim();
     currentPage = 1;
@@ -32,6 +33,8 @@ async function handleSubmitBtn(event) {
 
 async function handleLoadMore() {
     currentPage += 1;
+    loadMoreBtn.classList.add('hidden'); // Вимикаємо кнопку між запитами
+    loader.classList.remove('hidden');
     await fetchImages();
 }
 
@@ -44,6 +47,7 @@ async function fetchImages() {
                 position: 'topRight',
                 message: 'Sorry, there are no images matching your search query. Please try again!',
             });
+            loadMoreBtn.classList.add('hidden');// Ховаємо кнопку при поганому запиті
             return;
         }
         createImages(data);
@@ -54,7 +58,7 @@ async function fetchImages() {
                 message: "We're sorry, but you've reached the end of search results.",
             });
         } else {
-            loadMoreBtn.classList.remove('hidden');
+            loadMoreBtn.classList.remove('hidden'); // Показуємо кнопку після успішного завантаження даних
         }
         smoothScroll();
         showScrollToTopBtn();
